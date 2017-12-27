@@ -1,0 +1,50 @@
+{
+  "name": "soljitsu",
+  "version": "0.1.0",
+  "description": "cli tool offering features useful when auditing solidity smart contracts",
+  "author": "Alexander 'rmi7' Remie <alexander@oneup.company>",
+  "license": "MIT",
+  "bin": "./lib/index.js",
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "untildify": "^3.0.2",
+    "yargs": "^10.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-plugin-import": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "bugs": "https://github.com/BlockChainCompany/soljitsu/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlockChainCompany/soljitsu.git"
+  },
+  "homepage": "https://github.com/BlockChainCompany/soljitsu",
+  "keywords": [
+    "ethereum",
+    "solidity",
+    "util",
+    "file",
+    "dependency",
+    "files",
+    "blockchain",
+    "audit",
+    "flatten",
+    "combine",
+    "sol",
+    "ethpm",
+    "dapp",
+    "truffle",
+    "zeppelin",
+    "open-zeppelin",
+    "smart contract",
+    "smart-contract",
+    "cli",
+    "command line"
+  ]
+}
