@@ -1,6 +1,6 @@
 {
   "name": "soljitsu",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "cli tool offering features useful when auditing solidity smart contracts",
   "author": "Alexander 'rmi7' Remie <alexander@oneup.company>",
   "license": "MIT",
