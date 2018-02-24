@@ -6,6 +6,8 @@
 
 Soljitsu is a cli tool offering 2 features useful when auditing solidity smart contracts: `flatten` + `combine`.
 
+**Tested on MacOS, Ubuntu and Windows (10)!**
+
 ## Description
 
 There are various tools to perform automated testing of smart contracts each with their own requirements.
@@ -33,7 +35,7 @@ To address the above we could use this tool to **combine** all dependencies of p
 - place a comment at the top for each used `node_modules` dependency stating the used version
 - remove all `import` statements
 - use the lowest found solidity version (from the `pragma` line) and use that for the new file
-- name the new file by replacing folder separators (`/`) with a dot (`.`) and prepending `.combined` to `.sol`
+- name the new file by replacing folder separators (`/`) with a dot (`.`)
 
 ## Notes
 
@@ -186,13 +188,13 @@ Executing `soljitsu combine --src-dir=./contracts --dest-dir=./out --dep-dir=./n
 
 ```
 └── out
-    ├── ContractX.combined.sol
-    └── sub.ContractY.combined.sol
+    ├── ContractX.sol
+    └── sub.ContractY.sol
 ```
 
 with the file's content being:
 
-`ContractX.combined.sol`
+`ContractX.sol`
 
 ```
 pragma solidity ^0.4.18;
@@ -216,7 +218,7 @@ contract ContractX {
 }
 ```
 
-`sub.ContractY.combined.sol`
+`sub.ContractY.sol`
 
 ```
 pragma solidity ^0.4.18;
@@ -236,6 +238,10 @@ contract ContractY is Pausable {
 }
 
 ```
+
+## Test
+
+`npm test`
 
 ## License
 
