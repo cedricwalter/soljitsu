@@ -42,7 +42,7 @@ describe('soljitsu', () => {
   });
 
   describe('flatten', () => {
-    it('should generate expected flattened files', () => {
+    it('should generate expected flattened files (imports with single quotes)', () => {
       const ContractX =
         'pragma solidity ^0.4.19;\n' +
         'import \'./sub/ContractY.sol\';\n' +
@@ -95,10 +95,66 @@ describe('soljitsu', () => {
       expect(destContractY).to.equal(expectedContractY);
       expect(destMyDep).to.equal(expectedMyDep);
     });
+
+    it('should generate expected flattened files (imports with double quotes)', () => {
+      const ContractX =
+        'pragma solidity ^0.4.19;\n' +
+        'import "./sub/ContractY.sol";\n' +
+        'contract ContractX {}\n';
+
+      const ContractY =
+        'pragma solidity ^0.4.19;\n' +
+        'import "some-module/MyDep.sol";\n' +
+        'contract ContractY {}\n';
+
+      const MyDepPackageJson = {
+        name: 'some-module',
+        version: '0.1.2',
+      };
+
+      const MyDep =
+        'pragma solidity ^0.4.19;\n' +
+        'contract MyDep {}\n';
+
+      fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
+
+      const subDir = path.join(srcDir, 'sub');
+      mkdirp.sync(subDir);
+      fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
+
+      const depModuleDir = path.join(depDir, 'some-module');
+      mkdirp.sync(depModuleDir);
+      fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
+      fs.writeFileSync(path.join(depModuleDir, 'MyDep.sol'), MyDep);
+
+      flatten({ srcDir, depDir, destDir });
+
+      const destFileNames = fs.readdirSync(destDir);
+      expect(destFileNames).to.deep.equal(['ContractX.sol', 'some-module.MyDep.sol', 'sub.ContractY.sol']);
+
+      const destContractX = fs.readFileSync(path.join(destDir, 'ContractX.sol'), 'utf8');
+      const destContractY = fs.readFileSync(path.join(destDir, 'sub.ContractY.sol'), 'utf8');
+      const destMyDep = fs.readFileSync(path.join(destDir, 'some-module.MyDep.sol'), 'utf8');
+
+      const expectedContractX = ContractX
+        .replace('pragma solidity ^0.4.19;', 'pragma solidity ^0.4.19;\n\n')
+        .replace('./sub/', './sub.')
+        .replace(/"/g, '\''); // will always output single quotes
+      const expectedContractY = ContractY
+        .replace('pragma solidity ^0.4.19;', 'pragma solidity ^0.4.19;\n\n')
+        .replace('some-module/', './some-module.')
+        .replace(/"/g, '\''); // will always output single quotes
+      const expectedMyDep = MyDep
+        .replace('pragma solidity ^0.4.19;', 'pragma solidity ^0.4.19;\n\n// some-module: 0.1.2');
+
+      expect(destContractX).to.equal(expectedContractX);
+      expect(destContractY).to.equal(expectedContractY);
+      expect(destMyDep).to.equal(expectedMyDep);
+    });
   });
 
   describe('combine', () => {
-    it('should generate expected combined files', () => {
+    it('should generate expected combined files (imports with single quotes)', () => {
       const ContractX =
         'pragma solidity ^0.4.19;\n' +
         'import \'./sub/ContractY.sol\';\n' +
@@ -107,6 +163,61 @@ describe('soljitsu', () => {
       const ContractY =
         'pragma solidity ^0.4.19;\n' +
         'import \'some-module/MyDep.sol\';\n' +
+        'contract ContractY {}\n';
+
+      const MyDepPackageJson = {
+        name: 'some-module',
+        version: '0.1.2',
+      };
+
+      const MyDep =
+        'pragma solidity ^0.4.19;\n' +
+        'contract MyDep {}\n';
+
+      fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
+
+      const subDir = path.join(srcDir, 'sub');
+      mkdirp.sync(subDir);
+      fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
+
+      const depModuleDir = path.join(depDir, 'some-module');
+      mkdirp.sync(depModuleDir);
+      fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
+      fs.writeFileSync(path.join(depModuleDir, 'MyDep.sol'), MyDep);
+
+      combine({ srcDir, depDir, destDir });
+
+      const destFileNames = fs.readdirSync(destDir);
+      expect(destFileNames).to.deep.equal(['ContractX.sol', 'sub.ContractY.sol']);
+
+      const destContractX = fs.readFileSync(path.join(destDir, 'ContractX.sol'), 'utf8');
+      const destContractY = fs.readFileSync(path.join(destDir, 'sub.ContractY.sol'), 'utf8');
+
+      const expectedContractX =
+        'pragma solidity ^0.4.19;\n\n' +
+        '// some-module: 0.1.2\n\n' +
+        'contract MyDep {}\n\n' +
+        'contract ContractY {}\n\n' +
+        'contract ContractX {}';
+      const expectedContractY =
+        'pragma solidity ^0.4.19;\n\n' +
+        '// some-module: 0.1.2\n\n' +
+        'contract MyDep {}\n\n' +
+        'contract ContractY {}';
+
+      expect(destContractX).to.equal(expectedContractX);
+      expect(destContractY).to.equal(expectedContractY);
+    });
+
+    it('should generate expected combined files (imports with double quotes)', () => {
+      const ContractX =
+        'pragma solidity ^0.4.19;\n' +
+        'import "./sub/ContractY.sol";\n' +
+        'contract ContractX {}\n';
+
+      const ContractY =
+        'pragma solidity ^0.4.19;\n' +
+        'import "some-module/MyDep.sol";\n' +
         'contract ContractY {}\n';
 
       const MyDepPackageJson = {
