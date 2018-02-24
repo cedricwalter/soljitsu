@@ -6,6 +6,8 @@
 
 Soljitsu is a cli tool offering 2 features useful when auditing solidity smart contracts: `flatten` + `combine`.
 
+**Tested on MacOS, Ubuntu and Windows (10)!**
+
 ## Description
 
 There are various tools to perform automated testing of smart contracts each with their own requirements.
@@ -236,6 +238,10 @@ contract ContractY is Pausable {
 }
 
 ```
+
+## Test
+
+`npm test`
 
 ## License
 
