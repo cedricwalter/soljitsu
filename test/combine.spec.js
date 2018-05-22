@@ -21,9 +21,9 @@ describe('soljitsu - combine', () => {
   });
 
   beforeEach(() => {
-    srcDir = path.join(tmpDir, `srcDir-${Date.now()}`);
+    srcDir = path.join(tmpDir, 'contracts');
     depDir = path.join(tmpDir, 'node_modules');
-    destDir = path.join(tmpDir, `destDir-${Date.now()}`);
+    destDir = path.join(tmpDir, 'destDir');
 
     mkdirp.sync(srcDir);
     mkdirp.sync(depDir);
