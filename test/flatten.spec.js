@@ -11,7 +11,7 @@ const flatten = require('../lib/flatten');
 describe('soljitsu - flatten', () => {
   let tmpDir;
   let srcDir;
-  let depDir;
+  let npmDir;
   let destDir;
 
   before(() => {
@@ -22,17 +22,17 @@ describe('soljitsu - flatten', () => {
 
   beforeEach(() => {
     srcDir = path.join(tmpDir, 'contracts');
-    depDir = path.join(tmpDir, 'node_modules');
+    npmDir = path.join(tmpDir, 'node_modules');
     destDir = path.join(tmpDir, 'destDir');
 
     mkdirp.sync(srcDir);
-    mkdirp.sync(depDir);
+    mkdirp.sync(npmDir);
     mkdirp.sync(destDir);
   });
 
   afterEach(() => {
     rimraf.sync(srcDir);
-    rimraf.sync(depDir);
+    rimraf.sync(npmDir);
     rimraf.sync(destDir);
   });
 
@@ -48,7 +48,7 @@ describe('soljitsu - flatten', () => {
 
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol']);
@@ -70,7 +70,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(subDir);
       fs.writeFileSync(path.join(subDir, 'ContractX.sol'), ContractX);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['sub.ContractX.sol']);
@@ -95,7 +95,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
       fs.writeFileSync(path.join(srcDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'ContractY.sol']);
@@ -127,7 +127,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(subDir);
       fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'sub.ContractY.sol']);
@@ -158,7 +158,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(subDir, 'ContractX.sol'), ContractX);
       fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['sub.ContractX.sol', 'sub.ContractY.sol']);
@@ -188,7 +188,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
       fs.writeFileSync(path.join(srcDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'ContractY.sol']);
@@ -221,7 +221,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(subDir);
       fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'sub.ContractY.sol']);
@@ -254,7 +254,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(subDir, 'ContractX.sol'), ContractX);
       fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['sub.ContractX.sol', 'sub.ContractY.sol']);
@@ -290,7 +290,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(srcDir, 'ContractY.sol'), ContractY);
       fs.writeFileSync(path.join(srcDir, 'ContractZ.sol'), ContractZ);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'ContractY.sol', 'ContractZ.sol']);
@@ -332,7 +332,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(subDir);
       fs.writeFileSync(path.join(subDir, 'ContractZ.sol'), ContractZ);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'ContractY.sol', 'sub.ContractZ.sol']);
@@ -375,7 +375,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
       fs.writeFileSync(path.join(subDir, 'ContractZ.sol'), ContractZ);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'sub.ContractY.sol', 'sub.ContractZ.sol']);
@@ -421,7 +421,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(sibDir);
       fs.writeFileSync(path.join(sibDir, 'ContractZ.sol'), ContractZ);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'sib.ContractZ.sol', 'sub.ContractY.sol']);
@@ -467,7 +467,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(nestedDir);
       fs.writeFileSync(path.join(nestedDir, 'ContractZ.sol'), ContractZ);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'sub.ContractY.sol', 'sub.nested.ContractZ.sol']);
@@ -510,7 +510,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(subDir, 'ContractY.sol'), ContractY);
       fs.writeFileSync(path.join(subDir, 'ContractZ.sol'), ContractZ);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['sub.ContractX.sol', 'sub.ContractY.sol', 'sub.ContractZ.sol']);
@@ -551,12 +551,12 @@ describe('soljitsu - flatten', () => {
 
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
 
-      const depModuleDir = path.join(depDir, 'some-module');
+      const depModuleDir = path.join(npmDir, 'some-module');
       mkdirp.sync(depModuleDir);
       fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
       fs.writeFileSync(path.join(depModuleDir, 'MyDep.sol'), MyDep);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'some-module.MyDep.sol']);
@@ -591,14 +591,14 @@ describe('soljitsu - flatten', () => {
 
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
 
-      const depModuleDir = path.join(depDir, 'some-module');
+      const depModuleDir = path.join(npmDir, 'some-module');
       mkdirp.sync(depModuleDir);
       fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
       const depModuleSubDir = path.join(depModuleDir, 'sub');
       mkdirp.sync(depModuleSubDir);
       fs.writeFileSync(path.join(depModuleSubDir, 'MyDep.sol'), MyDep);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'some-module.sub.MyDep.sol']);
@@ -638,13 +638,13 @@ describe('soljitsu - flatten', () => {
 
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
 
-      const depModuleDir = path.join(depDir, 'some-module');
+      const depModuleDir = path.join(npmDir, 'some-module');
       mkdirp.sync(depModuleDir);
       fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
       fs.writeFileSync(path.join(depModuleDir, 'MyDep.sol'), MyDep);
       fs.writeFileSync(path.join(depModuleDir, 'MyOtherDep.sol'), MyOtherDep);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'some-module.MyDep.sol', 'some-module.MyOtherDep.sol']);
@@ -688,7 +688,7 @@ describe('soljitsu - flatten', () => {
 
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
 
-      const depModuleDir = path.join(depDir, 'some-module');
+      const depModuleDir = path.join(npmDir, 'some-module');
       mkdirp.sync(depModuleDir);
       fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
       fs.writeFileSync(path.join(depModuleDir, 'MyDep.sol'), MyDep);
@@ -696,7 +696,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(depModuleSubDir);
       fs.writeFileSync(path.join(depModuleSubDir, 'MyOtherDep.sol'), MyOtherDep);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'some-module.MyDep.sol', 'some-module.sub.MyOtherDep.sol']);
@@ -746,17 +746,17 @@ describe('soljitsu - flatten', () => {
 
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
 
-      const depModuleDir = path.join(depDir, 'some-module');
+      const depModuleDir = path.join(npmDir, 'some-module');
       mkdirp.sync(depModuleDir);
       fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
       fs.writeFileSync(path.join(depModuleDir, 'MyDep.sol'), MyDep);
 
-      const dep2ModuleDir = path.join(depDir, 'some-other-module');
+      const dep2ModuleDir = path.join(npmDir, 'some-other-module');
       mkdirp.sync(dep2ModuleDir);
       fs.writeFileSync(path.join(dep2ModuleDir, 'package.json'), JSON.stringify(MyOtherDepPackageJson, null, 4));
       fs.writeFileSync(path.join(dep2ModuleDir, 'MyOtherDep.sol'), MyOtherDep);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'some-module.MyDep.sol', 'some-other-module.MyOtherDep.sol']);
@@ -794,7 +794,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
       fs.writeFileSync(path.join(srcDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'ContractY.sol']);
@@ -824,7 +824,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
       fs.writeFileSync(path.join(srcDir, 'ContractY.sol'), ContractY);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'ContractY.sol']);
@@ -861,7 +861,7 @@ describe('soljitsu - flatten', () => {
       fs.writeFileSync(path.join(srcDir, 'ContractY.sol'), ContractY);
       fs.writeFileSync(path.join(srcDir, 'ContractZ.sol'), ContractZ);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal(['ContractX.sol', 'ContractY.sol', 'ContractZ.sol']);
@@ -917,7 +917,7 @@ describe('soljitsu - flatten', () => {
 
       fs.writeFileSync(path.join(srcDir, 'ContractX.sol'), ContractX);
 
-      const depModuleDir = path.join(depDir, 'some-module');
+      const depModuleDir = path.join(npmDir, 'some-module');
       mkdirp.sync(depModuleDir);
       fs.writeFileSync(path.join(depModuleDir, 'package.json'), JSON.stringify(MyDepPackageJson, null, 4));
       fs.writeFileSync(path.join(depModuleDir, 'MyDep.sol'), MyDep);
@@ -934,7 +934,7 @@ describe('soljitsu - flatten', () => {
       mkdirp.sync(depModuleSubSubSubDir);
       fs.writeFileSync(path.join(depModuleSubSubSubDir, 'MySubSubSubDep.sol'), MySubSubSubDep);
 
-      flatten({ srcDir, depDir, destDir });
+      flatten({ srcDir, npmDir, destDir });
 
       const destFileNames = fs.readdirSync(destDir);
       expect(destFileNames).to.deep.equal([
